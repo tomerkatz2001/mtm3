@@ -5,27 +5,36 @@ namespace mtm{
 class Exception: public std::exception{};
 class GameException: public Exception{};
 class IllegalArgument:public GameException{
-    const char* what() const throw();
+    public:
+    const char* what() const noexcept;
 };
 class IllegalCell: public GameException{
-    const char* what() const throw();
+    public:
+    const char* what() const noexcept;
 };
 class CellEmpty: public GameException{
-    const char* what() const throw();
+    public:
+    const char* what() const noexcept;
 };
 class MoveTooFar:public GameException{
-    const char* what() const throw();
+    public:
+    const char* what() const noexcept;
 };
 class CellOccupied:public GameException{
-    const char* what() const throw();
+    public:
+    const char* what() const noexcept;
 };
 class OutOfRange:public GameException{
-    const char* what() const throw();
+    public:
+    const char* what() const noexcept;
 };
 class OutOfAmmo:public GameException{
-    const char* what() const throw();
+    public:
+    const char* what() const noexcept;
 };
 class IllegalTarget:public GameException{
-    chonst char* what() const throw();
+    public:
+    const char* what() const noexcept;
 }; 
+}
 #endif
