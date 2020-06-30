@@ -2,11 +2,13 @@
 #define MATRIX_H
 #include "Auxiliaries.h"
 #include <assert.h>
+#include <exception>
+
 namespace mtm{
 
 enum operations {bigger,smaller,big_equal,small_equal,equal,not_equal};
 
- 
+
 
 template<class T>
 class Matrix
@@ -14,26 +16,30 @@ class Matrix
     private:
     T** matrix;
     mtm::Dimensions dim; 
-    struct AccessIllegalElement : public std::exception
-{
-	const char * what () const throw ()
+    public:
+    
+    class Exception : public std::exception{};
+    class AccessIllegalElement:public Exception 
     {
+        public:
+	    const char* what() const throw ()
+        {
     	return "Mtm matrix error: An attempt to access an illegal element ";
-    }
-};
-    struct IllegalInitialization : public std::exception
-{
-	const char * what () const throw ()
+        }
+    };
+    class IllegalInitialization : public Exception
+    {
+        public:
+	    const char * what () const throw ()
     {
     	return "Mtm matrix error: Illegal initialization values";
     }
-};
-
+    };
+    class DimensionMismatch : public Exception
+    {
+    Dimensions dim_left;
+    Dimensions dim_right;
     public:
-    struct DimensionMismatch : public std::exception
-{
-   Dimensions dim_left;
-   Dimensions dim_right;
     DimensionMismatch(Dimensions dim1,Dimensions dim2):dim_left(dim1),dim_right(dim2){}
 	const char * what () const throw ()
     {
@@ -45,7 +51,7 @@ class Matrix
         result.std::string::append(right_str);
     	return result.c_str();
     }
-};
+    };
     explicit Matrix(const Dimensions& dimensions,const T& val=T());
     ~Matrix();
     Matrix(const Matrix& matrix1);//copy constractor
