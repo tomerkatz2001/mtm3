@@ -2,8 +2,8 @@
 #include "IntMatrix.h"
 #include <stdlib.h>
 #include <assert.h>
-
-using namespace mtm;
+#include "Auxiliaries.h"
+namespace mtm{
 
 enum operations {bigger,smaller,big_equal,small_equal,equal,not_equal};
 static IntMatrix makeCompare(const IntMatrix& M,enum operations what_to_do, int num)
@@ -224,12 +224,12 @@ IntMatrix IntMatrix::operator !=(int num)
 
 
 //_____________________________friend_and_symmetric_functions:____________________________________________________
-IntMatrix mtm::operator+(const IntMatrix& M1, const IntMatrix& M2)
+IntMatrix operator+(const IntMatrix& M1, const IntMatrix& M2)
 {
     IntMatrix M3=M1;
     return M3+=M2;
 } 
-std::ostream& mtm::operator<<(std::ostream& os, const IntMatrix& matrix)
+std::ostream& operator<<(std::ostream& os, const IntMatrix& matrix)
 {
     
     int* sliced_matrix=new int[matrix.size()];
@@ -363,6 +363,6 @@ IntMatrix::const_iterator IntMatrix::end()const
     return const_iterator(this,this->size());
 }
 
-
+}
 
 
