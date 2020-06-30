@@ -3,6 +3,7 @@
 #include<iostream>
 #include <stdlib.h>
 #include "Auxiliaries.h"
+
 namespace mtm{
 class IntMatrix{
 
