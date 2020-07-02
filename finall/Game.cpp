@@ -33,7 +33,8 @@ static std::shared_ptr<mtm::Character> cloneCharacter(const mtm::Game& game, int
     mtm::units_t copy_power=game.board.at(i).at(j)->getPower();
     mtm::CharacterType copy_type=getType(game,i,j);
     mtm::Team copy_team=game.board.at(i).at(j)->getTeam();
-    return mtm::Game::makeCharacter(copy_type,copy_team,copy_health,copy_ammo,copy_range,copy_power);
+    std::shared_ptr<mtm::Character> copy =mtm::Game::makeCharacter(copy_type,copy_team,copy_health,copy_ammo,copy_range,copy_power);
+    return copy;
 }
 
 
@@ -69,7 +70,10 @@ mtm::Game::Game(const mtm::Game& other)
         {
             if(other.board.at(i).at(j)!=nullptr)
             { 
-                board[i][j]=cloneCharacter(other,i,j);
+               
+                this->board[i][j]=cloneCharacter(other,i,j);
+                
+
             }
         }
     }
@@ -166,6 +170,7 @@ void mtm::Game::addCharacter(const mtm::GridPoint& coordinates, std::shared_ptr<
     board.at(coordinates.row).at(coordinates.col)=character;
 
 }
+
 std::shared_ptr<mtm::Character> mtm::Game::makeCharacter(mtm::CharacterType type,mtm::Team team,
 units_t health, units_t ammo, units_t range, units_t power)
 {
@@ -181,9 +186,9 @@ units_t health, units_t ammo, units_t range, units_t power)
     {
         return std::shared_ptr<Character>(new mtm::Medic(team,health,ammo,range,power));
     }
-    //else the type is Medic
+    //else the type is sniper
     
-        return std::shared_ptr<Character>(new mtm::Medic(team,health,ammo,range,power));
+        return std::shared_ptr<Character>(new mtm::Sniper(team,health,ammo,range,power));
     
 
 }
@@ -277,7 +282,7 @@ static void medicAttack(mtm::Game& game,const mtm::GridPoint & src_coordinates, 
     int medic_power=game.board.at(attacker_row).at(attacker_col)->getPower();
     if(game.board.at(attacked_row).at(attacked_col)==nullptr)//the cell is empty
     {
-        throw mtm::IllegalTarget();
+        throw mtm::CellEmpty();
     }
     if(attacked_col==attacker_col&&attacker_row==attacked_row)//not the medic 
     {
@@ -314,9 +319,9 @@ static void sniperAttack(mtm::Game& game,const mtm::GridPoint & src_coordinates,
     mtm::Team attacker_team=game.board.at(attacker_row).at(attacker_col)->getTeam();
     int sniper_power=game.board.at(attacker_row).at(attacker_col)->getPower();
     int sniper_range=game.board.at(attacker_row).at(attacker_col)->getRange();
-    if(game.board.at(attacked_row).at(attacker_col)==nullptr)//the cell is empty
+    if(game.board.at(attacked_row).at(attacked_col)==nullptr)//the cell is empty
     {
-        throw mtm::IllegalTarget();
+        throw mtm::CellEmpty();
     }
     if(game.board.at(attacker_row).at(attacker_col)->getAmmo()<\
     game.board.at(attacker_row).at(attacker_col)->getAttackCost())
@@ -340,10 +345,15 @@ static void sniperAttack(mtm::Game& game,const mtm::GridPoint & src_coordinates,
                     
             game.board[attacker_row][attacker_col]->lowerAmmo(1);
         }
-        else{
+        else{//the same team
             throw mtm::IllegalTarget();
         }
     }
+    else{
+
+            throw mtm::OutOfRange();
+    }
+    
 }
 static void checkForDeads(mtm::Game& game)
 {
@@ -375,7 +385,7 @@ void mtm::Game::attack(const mtm::GridPoint & src_coordinates, const mtm::GridPo
     int board_height=board.size();
       if(src_coordinates.row<0||src_coordinates.col<0||dst_coordinates.col<0||dst_coordinates.row<0||\
       src_coordinates.row>=board_height||dst_coordinates.row>=board_height||\
-      src_coordinates.col>=board_width||dst_coordinates.col>=board_height)
+      src_coordinates.col>=board_width||dst_coordinates.col>=board_width)
       {
          throw mtm::IllegalCell();
       }
@@ -425,8 +435,8 @@ bool mtm::Game::isOver(Team* winningTeam)const{
     bool team2=false;
     int board_width=board.at(0).size();
     int board_height=board.size();
-    for(int i=0;i<=board_height;i++){ 
-        for(int j=0;j<=board_width;j++){
+    for(int i=0;i<board_height;i++){ 
+        for(int j=0;j<board_width;j++){
             if(board.at(i).at(j)!=nullptr){
                 if(board.at(i).at(j)->getTeam()==mtm::CPP){
                     team1=true;

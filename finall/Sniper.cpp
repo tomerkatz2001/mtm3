@@ -7,6 +7,7 @@ Character(team,health,ammo,range,power)
     max_move=SNIPER_MAX_MOVE;
     recharge_ammo=SNIPER_RELOAD;
     
+    
 }
 
 char mtm::Sniper::printType()

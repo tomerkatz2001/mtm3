@@ -15,6 +15,7 @@ class Character
     units_t max_move;//how much tiles the character can move
     units_t recharge_ammo;//how much ammo is added in one recharge
     
+    
     public:
     Character(Team team, units_t health, units_t ammo, units_t range, units_t power);
     int sequence=0;
