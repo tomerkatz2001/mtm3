@@ -251,6 +251,7 @@ std::ostream& operator<<(std::ostream& os, const IntMatrix& matrix)
         }
     }
     os<<mtm::printMatrix(sliced_matrix, matrix.dim);
+    delete[] sliced_matrix;
     return os;
 }    
 bool all(const IntMatrix mat){
