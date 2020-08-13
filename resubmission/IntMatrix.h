@@ -28,12 +28,12 @@ class IntMatrix{
     IntMatrix& operator+=(int scalar);
     int& operator()(int i,int j);
     int operator()(int i,int j) const;  
-    IntMatrix operator<(int num);
-    IntMatrix operator>(int num);
-    IntMatrix operator >=(int num);
-    IntMatrix operator <=(int num);
-    IntMatrix operator ==(int num);
-    IntMatrix operator !=(int num);
+    IntMatrix operator<(int num) const;
+    IntMatrix operator>(int num) const;
+    IntMatrix operator >=(int num) const;
+    IntMatrix operator <=(int num) const;
+    IntMatrix operator ==(int num) const;
+    IntMatrix operator !=(int num) const;
     class iterator;
     iterator begin();
     iterator end();
