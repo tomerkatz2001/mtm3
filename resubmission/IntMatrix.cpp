@@ -192,27 +192,27 @@ IntMatrix& IntMatrix::operator+=(int scalar){
 int IntMatrix::operator()(int i,int j) const{
     return this->matrix[i][j];
 }
-IntMatrix  IntMatrix::operator<(int num)
+IntMatrix  IntMatrix::operator<(int num) const
     {
         return makeCompare(*this,operations::smaller,num);
     }
-IntMatrix IntMatrix::operator>(int num)
+IntMatrix IntMatrix::operator>(int num) const
     {
         return makeCompare(*this,operations::bigger,num);
     }
-IntMatrix IntMatrix::operator >=(int num)
+IntMatrix IntMatrix::operator >=(int num) const
     {
         return makeCompare(*this, operations::big_equal,num);
     }
-IntMatrix IntMatrix::operator <=(int num)
+IntMatrix IntMatrix::operator <=(int num) const
     {
         return makeCompare(*this,operations::small_equal,num);
     }
-IntMatrix IntMatrix::operator ==(int num)
+IntMatrix IntMatrix::operator ==(int num) const
     {
         return makeCompare(*this,operations::equal, num);
     }
-IntMatrix IntMatrix::operator !=(int num)
+IntMatrix IntMatrix::operator !=(int num) const
     {
         return makeCompare(*this,operations::not_equal,num);
     }
